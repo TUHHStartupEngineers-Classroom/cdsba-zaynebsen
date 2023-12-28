@@ -2,6 +2,37 @@
 title: "Regression and Statistical Inference"
 ---
 
-::: callout-note
-You can delete everything in here and start fresh.
-:::
+```{r}
+View(car_prices)
+dim(car_prices)
+str(car_prices)
+head(car_prices)
+tail(car_prices)
+modelall <- lm(price~.,data= car_prices)
+summary(model)
+"The most significant parameters are:enginetype(ohc and ohcv),cylindernumber(five, four,six and twelve), enginesize,stroke,peakrpm,carwidth,carbody(hardtop, hatchback and wagon),enginelocation(rear)"
+confint(model, level = 0.95)
+typeof(car_prices$carwidth)
+plot(car_prices$carwidth, car_prices$price)
+abline(lm(car_prices$price ~ car_prices$carwidth))
+"As the width of the car increases, as its price increases. If we increase the width with about 2 units, the car price increases with about 5000 units"
+modelimp <- lm(price~carwidth, data=car_prices)
+summary(modelimp)
+sprintf("Adjusted R^2: %.2f", broom::glance(modelall)$adj.r.squared)
+sprintf("Adjusted R^2: %.2f", broom::glance(modelimp)$adj.r.squared)
+sprintf("AIC: %.2f", AIC(modelall))
+sprintf("AIC: %.2f", AIC(modelimp))
+confint(modelimp, level = 0.95)
+"p-value: < 2.2e-16. So, the effect of the variable carwidth is statistically significant"
+
+
+
+```
+```{r}
+library(dplyr)
+seat_heating <- rep(c(TRUE), times=181)
+car_prices %>% mutate(seat_heating)
+modell <- lm(car_prices$price~seat_heating)
+summary(modell)
+```
+

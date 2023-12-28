@@ -2,6 +2,74 @@
 title: "Randomized Controlled Trials"
 ---
 
-::: callout-note
-You can delete everything in here and start fresh.
-:::
+```{r}
+compare_chatbot <- 
+  ggplot(abtest_online, 
+         aes(x = purchase, 
+             y = chatbot, 
+             color = as.factor(purchase))) +
+  stat_summary(geom = "errorbar", 
+               width = 1,
+               fun.data = "mean_se", 
+               fun.args = list(mult=1.96),
+               show.legend = F) +
+  labs(x = NULL, y = "chatbot", title = "Difference in chatbot")
+
+compare_previous_visit <- 
+  ggplot(abtest_online, 
+         aes(x = purchase, 
+             y = previous_visit, 
+             color = as.factor(purchase))) +
+  stat_summary(geom = "errorbar", 
+               width = 1,
+               fun.data = "mean_se", 
+               fun.args = list(mult=1.96),
+               show.legend = F) +
+  labs(x = NULL, y = "previous_visit", title = "Difference in previous_visit")
+
+compare_mobile_device <- 
+  ggplot(abtest_online, 
+         aes(x = purchase, 
+             y = mobile_device, 
+             color = as.factor(purchase))) +
+  stat_summary(geom = "errorbar", 
+               width = 1,
+               fun.data = "mean_se", 
+               fun.args = list(mult=1.96),
+               show.legend = F) +
+  labs(x = NULL, y = "mobile_device", title = "Difference in mobile_device")
+
+compare_purchase_amount <- 
+  ggplot(abtest_online, 
+         aes(x = purchase, 
+             y = purchase_amount, 
+             color = as.factor(purchase))) +
+  stat_summary(geom = "errorbar", 
+               width = 1,
+               fun.data = "mean_se", 
+               fun.args = list(mult=1.96),
+               show.legend = F) +
+  labs(x = NULL, y = "purchase_amount", title = "Difference in purchase_amount")
+
+compare_chatbot
+compare_previous_visit
+compare_mobile_device
+compare_purchase_amount
+
+model <- lm(purchase_amount~chatbot, data= abtest_online)
+summary(model)
+```
+
+
+
+```{r}
+lm_mod <- lm(purchase_amount ~ purchase * chatbot + purchase * previous_visit+purchase *mobile_device , data = abtest_online)
+summary(lm_mod)
+
+```
+
+```{r}
+model<-glm(purchase~chatbot+previous_visit+mobile_device, family=binomial(link='logit'), abtest_online)
+summary(model)
+```
+

@@ -2,6 +2,63 @@
 title: "Statistical Concepts"
 ---
 
-::: callout-note
-You can delete everything in here and start fresh.
-:::
+---
+Expected value:
+---
+
+```{r}
+"expected value of age"
+mean(random_vars$age)
+"expected value of income"
+mean(random_vars$income)
+```
+
+---
+Variance :
+---
+
+```{r}
+"variance of age"
+var(random_vars$age)
+"variance of income"
+var(random_vars$income)
+
+```
+
+---
+Standard deviation:
+---
+```{r}
+"std of age"
+sd(random_vars$age)
+"std of income"
+sd_income <- sd(random_vars$income)
+
+"The standard deviation of the income is a lot higher than the deviation of the age. This means that the samples of the income are more far to the mean and to each other. "
+```
+
+---
+Relationship between both variables:
+---
+```{r}
+"covvariance of age and income"
+cov(random_vars$age,random_vars$income)
+"correlation of age and income "
+cor(random_vars$age,random_vars$income)
+
+"The correlation is easier to interpret because it provides a standardized scale. it is dimensionless."
+```
+
+---
+conditional expected value:
+---
+```{r}
+"E[income/age<=18]"
+weighted.mean(random_vars[random_vars$age<=  18,'income'])
+"E[income/age<18 and >65]"
+weighted.mean(random_vars[random_vars$age>18 & random_vars$age<65 ,'income'])
+"E[income/age>=65]"
+weighted.mean(random_vars[random_vars$age>=65 ,'income'])
+
+```
+

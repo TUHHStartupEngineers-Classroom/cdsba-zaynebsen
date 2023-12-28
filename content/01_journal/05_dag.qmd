@@ -2,6 +2,38 @@
 title: "Directed Acyclic Graphs"
 ---
 
-::: callout-note
-You can delete everything in here and start fresh.
-:::
+---
+DAG of the parking spots scenario:
+---
+```{r}
+
+library(dagitty)
+library(ggdag)
+
+model <- dagify(
+sales ~ location,
+parking_spots~ location,
+sales ~ parking_spots,
+coords = list( x= c(sales = 3, location = 2,parking_spots = 1),
+                y = c(sales = 0, location = 1, parking_spots = 0))
+)
+ggdag(model) +
+  geom_dag_point(color = "white") +
+  geom_dag_text(color = "blue") +
+  geom_dag_edges(edge_color = "blue")
+
+
+```
+
+---
+DAG of the parking spots scenario:
+---
+
+```{r}
+model <-lm(customer_sat$satisfaction~customer_sat$follow_ups)
+summary(model)
+
+model2 <- lm(customer_sat$satisfaction + customer_sat$follow_ups~ customer_sat$subscription)
+summary(model2)
+```
+
