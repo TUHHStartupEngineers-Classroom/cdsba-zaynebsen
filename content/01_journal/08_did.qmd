@@ -36,6 +36,9 @@ diff_before_treat <- c(satis_treated_before_treatment,replicate(620,0)) - satis_
 # Difference between treatment and control group AFTER treatment
 diff_after_treat <- c(satis_treated_after_treatment,replicate(620,0)) - satis_control_after_treatment
 
+
+
+
 summary(lm(satis ~ month+hospital , data = hospdd))
 ```
 
