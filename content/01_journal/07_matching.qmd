@@ -68,7 +68,7 @@ summary(cem_coars)
 # Plot grid
 library(ggplot2)
 library(ggthemr)
-
+ggthemr()
 ggplot(df_cem, aes(x = age, y = pre_avg_purch,
                          size = weights, color = as.factor(card))) +
   geom_point(alpha = .2) +
