@@ -7,6 +7,7 @@ Expected value:
 ---
 
 ```{r}
+random_vars <- readRDS("random_vars.rds")
 "expected value of age"
 mean(random_vars$age)
 "expected value of income"

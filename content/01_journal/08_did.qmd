@@ -2,6 +2,40 @@
 title: "Difference-in-Differences"
 ---
 
-::: callout-note
-You can delete everything in here and start fresh.
-:::
+```{r}
+hospdd <- readRDS("hospdd.rds")
+treated <- hospdd%>% filter(procedure==1&month>3)%>%pull(hospital)
+control <- hospdd%>% filter(procedure==0&month>3)%>%pull(hospital)
+View(treated)
+View(control)
+satis_treated_before_treatment <- hospdd%>% filter(hospdd$hospital %in% treated==TRUE,month<4)%>% pull(satis)
+mean(satis_treated_before_treatment)
+
+satis_treated_after_treatment <- hospdd%>% filter(hospdd$hospital %in% treated==TRUE,month>3)%>% pull(satis)
+mean(satis_treated_after_treatment)
+
+satis_control_before_treatment <- hospdd%>% filter(hospdd$hospital %in% control==TRUE,month<4)%>% pull(satis)
+mean(satis_control_before_treatment)
+
+satis_control_after_treatment <- hospdd%>% filter(hospdd$hospital %in% control==TRUE,month>3)%>% pull(satis)
+mean(satis_control_after_treatment)
+```
+```{r}
+# Step 1: Difference between treatment and control group BEFORE treatment
+ satis_treated_before_treatment <- hospdd%>% filter(hospdd$hospital %in% treated==TRUE,month<4)%>% pull(satis)
+
+satis_treated_after_treatment <- hospdd%>% filter(hospdd$hospital %in% treated==TRUE,month>3)%>% pull(satis)
+
+satis_control_before_treatment <- hospdd%>% filter(hospdd$hospital %in% control==TRUE,month<4)%>% pull(satis)
+
+satis_control_after_treatment <- hospdd%>% filter(hospdd$hospital %in% control==TRUE,month>3)%>% pull(satis)
+
+# Difference between treatment and control group BEFORE treatment
+diff_before_treat <- c(satis_treated_before_treatment,replicate(620,0)) - satis_control_before_treatment
+
+# Difference between treatment and control group AFTER treatment
+diff_after_treat <- c(satis_treated_after_treatment,replicate(620,0)) - satis_control_after_treatment
+
+summary(lm(satis ~ month+hospital , data = hospdd))
+```
+

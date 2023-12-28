@@ -3,6 +3,7 @@ title: "Regression and Statistical Inference"
 ---
 
 ```{r}
+car_prices <- readRDS("car_prices.rds")
 View(car_prices)
 dim(car_prices)
 str(car_prices)

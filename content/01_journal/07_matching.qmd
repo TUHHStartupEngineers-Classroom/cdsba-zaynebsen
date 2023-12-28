@@ -30,7 +30,7 @@ ggdag(model) +
 ---
 
 ```{r}
-
+membership <- readRDS("membership.rds")
 E_0 <- mean(membership[membership$card==F, ]$avg_purch) # control group
 E_1 <- mean(membership[membership$card==T, ]$avg_purch) # treatment group
 E_1 - E_0

@@ -3,6 +3,7 @@ title: "Randomized Controlled Trials"
 ---
 
 ```{r}
+abtest_online <- readRDS("abtest_online.rds")
 compare_chatbot <- 
   ggplot(abtest_online, 
          aes(x = purchase, 

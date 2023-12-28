@@ -30,6 +30,7 @@ DAG of the parking spots scenario:
 ---
 
 ```{r}
+customer_sat <- readRDS("customer_sat.rds")
 model <-lm(customer_sat$satisfaction~customer_sat$follow_ups)
 summary(model)
 
