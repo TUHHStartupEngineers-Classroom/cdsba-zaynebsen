@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -43,6 +77,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -63,6 +100,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+
+<link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
 
 </head>
@@ -176,17 +216,171 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<div class="cell" data-hash="06_rct_cache/html/unnamed-chunk-1_1a9d44e579b9feafd20b96a5aa5fddb9">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Warning: le package 'ggplot2' a été compilé avec la version R 4.3.2</code></pre>
 </div>
-<div class="callout-title-container flex-fill">
-Note
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>abtest_online <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"abtest_online.rds"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>compare_chatbot <span class="ot">&lt;-</span> </span>
+<span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">ggplot</span>(abtest_online, </span>
+<span id="cb3-4"><a href="#cb3-4"></a>         <span class="fu">aes</span>(<span class="at">x =</span> purchase, </span>
+<span id="cb3-5"><a href="#cb3-5"></a>             <span class="at">y =</span> chatbot, </span>
+<span id="cb3-6"><a href="#cb3-6"></a>             <span class="at">color =</span> <span class="fu">as.factor</span>(purchase))) <span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>  <span class="fu">stat_summary</span>(<span class="at">geom =</span> <span class="st">"errorbar"</span>, </span>
+<span id="cb3-8"><a href="#cb3-8"></a>               <span class="at">width =</span> <span class="dv">1</span>,</span>
+<span id="cb3-9"><a href="#cb3-9"></a>               <span class="at">fun.data =</span> <span class="st">"mean_se"</span>, </span>
+<span id="cb3-10"><a href="#cb3-10"></a>               <span class="at">fun.args =</span> <span class="fu">list</span>(<span class="at">mult=</span><span class="fl">1.96</span>),</span>
+<span id="cb3-11"><a href="#cb3-11"></a>               <span class="at">show.legend =</span> F) <span class="sc">+</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"chatbot"</span>, <span class="at">title =</span> <span class="st">"Difference in chatbot"</span>)</span>
+<span id="cb3-13"><a href="#cb3-13"></a></span>
+<span id="cb3-14"><a href="#cb3-14"></a>compare_previous_visit <span class="ot">&lt;-</span> </span>
+<span id="cb3-15"><a href="#cb3-15"></a>  <span class="fu">ggplot</span>(abtest_online, </span>
+<span id="cb3-16"><a href="#cb3-16"></a>         <span class="fu">aes</span>(<span class="at">x =</span> purchase, </span>
+<span id="cb3-17"><a href="#cb3-17"></a>             <span class="at">y =</span> previous_visit, </span>
+<span id="cb3-18"><a href="#cb3-18"></a>             <span class="at">color =</span> <span class="fu">as.factor</span>(purchase))) <span class="sc">+</span></span>
+<span id="cb3-19"><a href="#cb3-19"></a>  <span class="fu">stat_summary</span>(<span class="at">geom =</span> <span class="st">"errorbar"</span>, </span>
+<span id="cb3-20"><a href="#cb3-20"></a>               <span class="at">width =</span> <span class="dv">1</span>,</span>
+<span id="cb3-21"><a href="#cb3-21"></a>               <span class="at">fun.data =</span> <span class="st">"mean_se"</span>, </span>
+<span id="cb3-22"><a href="#cb3-22"></a>               <span class="at">fun.args =</span> <span class="fu">list</span>(<span class="at">mult=</span><span class="fl">1.96</span>),</span>
+<span id="cb3-23"><a href="#cb3-23"></a>               <span class="at">show.legend =</span> F) <span class="sc">+</span></span>
+<span id="cb3-24"><a href="#cb3-24"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"previous_visit"</span>, <span class="at">title =</span> <span class="st">"Difference in previous_visit"</span>)</span>
+<span id="cb3-25"><a href="#cb3-25"></a></span>
+<span id="cb3-26"><a href="#cb3-26"></a>compare_mobile_device <span class="ot">&lt;-</span> </span>
+<span id="cb3-27"><a href="#cb3-27"></a>  <span class="fu">ggplot</span>(abtest_online, </span>
+<span id="cb3-28"><a href="#cb3-28"></a>         <span class="fu">aes</span>(<span class="at">x =</span> purchase, </span>
+<span id="cb3-29"><a href="#cb3-29"></a>             <span class="at">y =</span> mobile_device, </span>
+<span id="cb3-30"><a href="#cb3-30"></a>             <span class="at">color =</span> <span class="fu">as.factor</span>(purchase))) <span class="sc">+</span></span>
+<span id="cb3-31"><a href="#cb3-31"></a>  <span class="fu">stat_summary</span>(<span class="at">geom =</span> <span class="st">"errorbar"</span>, </span>
+<span id="cb3-32"><a href="#cb3-32"></a>               <span class="at">width =</span> <span class="dv">1</span>,</span>
+<span id="cb3-33"><a href="#cb3-33"></a>               <span class="at">fun.data =</span> <span class="st">"mean_se"</span>, </span>
+<span id="cb3-34"><a href="#cb3-34"></a>               <span class="at">fun.args =</span> <span class="fu">list</span>(<span class="at">mult=</span><span class="fl">1.96</span>),</span>
+<span id="cb3-35"><a href="#cb3-35"></a>               <span class="at">show.legend =</span> F) <span class="sc">+</span></span>
+<span id="cb3-36"><a href="#cb3-36"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"mobile_device"</span>, <span class="at">title =</span> <span class="st">"Difference in mobile_device"</span>)</span>
+<span id="cb3-37"><a href="#cb3-37"></a></span>
+<span id="cb3-38"><a href="#cb3-38"></a>compare_purchase_amount <span class="ot">&lt;-</span> </span>
+<span id="cb3-39"><a href="#cb3-39"></a>  <span class="fu">ggplot</span>(abtest_online, </span>
+<span id="cb3-40"><a href="#cb3-40"></a>         <span class="fu">aes</span>(<span class="at">x =</span> purchase, </span>
+<span id="cb3-41"><a href="#cb3-41"></a>             <span class="at">y =</span> purchase_amount, </span>
+<span id="cb3-42"><a href="#cb3-42"></a>             <span class="at">color =</span> <span class="fu">as.factor</span>(purchase))) <span class="sc">+</span></span>
+<span id="cb3-43"><a href="#cb3-43"></a>  <span class="fu">stat_summary</span>(<span class="at">geom =</span> <span class="st">"errorbar"</span>, </span>
+<span id="cb3-44"><a href="#cb3-44"></a>               <span class="at">width =</span> <span class="dv">1</span>,</span>
+<span id="cb3-45"><a href="#cb3-45"></a>               <span class="at">fun.data =</span> <span class="st">"mean_se"</span>, </span>
+<span id="cb3-46"><a href="#cb3-46"></a>               <span class="at">fun.args =</span> <span class="fu">list</span>(<span class="at">mult=</span><span class="fl">1.96</span>),</span>
+<span id="cb3-47"><a href="#cb3-47"></a>               <span class="at">show.legend =</span> F) <span class="sc">+</span></span>
+<span id="cb3-48"><a href="#cb3-48"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"purchase_amount"</span>, <span class="at">title =</span> <span class="st">"Difference in purchase_amount"</span>)</span>
+<span id="cb3-49"><a href="#cb3-49"></a></span>
+<span id="cb3-50"><a href="#cb3-50"></a>compare_chatbot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="06_rct_files/figure-html/unnamed-chunk-1-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="06_rct_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
 </div>
 </div>
-<div class="callout-body-container callout-body">
-<p>You can delete everything in here and start fresh.</p>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>compare_previous_visit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="06_rct_files/figure-html/unnamed-chunk-1-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="06_rct_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>compare_mobile_device</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="06_rct_files/figure-html/unnamed-chunk-1-3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="06_rct_files/figure-html/unnamed-chunk-1-3.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>compare_purchase_amount</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="06_rct_files/figure-html/unnamed-chunk-1-4.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="06_rct_files/figure-html/unnamed-chunk-1-4.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(purchase_amount<span class="sc">~</span>chatbot, <span class="at">data=</span> abtest_online)</span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; lm(formula = purchase_amount ~ chatbot, data = abtest_online)
+#&gt; 
+#&gt; Residuals:
+#&gt;     Min      1Q  Median      3Q     Max 
+#&gt; -16.702 -14.478  -9.626  13.922  64.648 
+#&gt; 
+#&gt; Coefficients:
+#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    
+#&gt; (Intercept)  16.7017     0.8374  19.944  &lt; 2e-16 ***
+#&gt; chatbotTRUE  -7.0756     1.1796  -5.998 2.79e-09 ***
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#&gt; 
+#&gt; Residual standard error: 18.65 on 998 degrees of freedom
+#&gt; Multiple R-squared:  0.0348, Adjusted R-squared:  0.03383 
+#&gt; F-statistic: 35.98 on 1 and 998 DF,  p-value: 2.787e-09</code></pre>
+</div>
+</div>
+<div class="cell" data-hash="06_rct_cache/html/unnamed-chunk-2_cc9c3d6a79ed3f8b4e0a753446fa3b19">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>lm_mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(purchase_amount <span class="sc">~</span> purchase <span class="sc">*</span> chatbot <span class="sc">+</span> purchase <span class="sc">*</span> previous_visit<span class="sc">+</span>purchase <span class="sc">*</span>mobile_device , <span class="at">data =</span> abtest_online)</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">summary</span>(lm_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; lm(formula = purchase_amount ~ purchase * chatbot + purchase * 
+#&gt;     previous_visit + purchase * mobile_device, data = abtest_online)
+#&gt; 
+#&gt; Residuals:
+#&gt;    Min     1Q Median     3Q    Max 
+#&gt; -32.22   0.00   0.00   0.00  48.40 
+#&gt; 
+#&gt; Coefficients:
+#&gt;                              Estimate Std. Error t value Pr(&gt;|t|)    
+#&gt; (Intercept)                 1.618e-13  7.633e-01   0.000   1.0000    
+#&gt; purchase                    3.434e+01  1.084e+00  31.687   &lt;2e-16 ***
+#&gt; chatbotTRUE                 4.376e-15  7.410e-01   0.000   1.0000    
+#&gt; previous_visit             -5.214e-15  1.984e-01   0.000   1.0000    
+#&gt; mobile_deviceTRUE          -9.423e-15  7.668e-01   0.000   1.0000    
+#&gt; purchase:chatbotTRUE        2.363e+00  1.214e+00   1.946   0.0519 .  
+#&gt; purchase:previous_visit    -1.940e-01  2.794e-01  -0.694   0.4876    
+#&gt; purchase:mobile_deviceTRUE -8.148e-01  1.252e+00  -0.651   0.5153    
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#&gt; 
+#&gt; Residual standard error: 8.911 on 992 degrees of freedom
+#&gt; Multiple R-squared:  0.781,  Adjusted R-squared:  0.7795 
+#&gt; F-statistic: 505.4 on 7 and 992 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="cell" data-hash="06_rct_cache/html/unnamed-chunk-3_2b3dc979318849c5db13c35f3d5523bb">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>model<span class="ot">&lt;-</span><span class="fu">glm</span>(purchase<span class="sc">~</span>chatbot<span class="sc">+</span>previous_visit<span class="sc">+</span>mobile_device, <span class="at">family=</span><span class="fu">binomial</span>(<span class="at">link=</span><span class="st">'logit'</span>), abtest_online)</span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; glm(formula = purchase ~ chatbot + previous_visit + mobile_device, 
+#&gt;     family = binomial(link = "logit"), data = abtest_online)
+#&gt; 
+#&gt; Coefficients:
+#&gt;                   Estimate Std. Error z value Pr(&gt;|z|)    
+#&gt; (Intercept)       -0.22185    0.12347  -1.797  0.07237 .  
+#&gt; chatbotTRUE       -0.96894    0.13564  -7.144 9.09e-13 ***
+#&gt; previous_visit     0.10606    0.03262   3.252  0.00115 ** 
+#&gt; mobile_deviceTRUE -0.07119    0.14530  -0.490  0.62417    
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#&gt; 
+#&gt; (Dispersion parameter for binomial family taken to be 1)
+#&gt; 
+#&gt;     Null deviance: 1329.1  on 999  degrees of freedom
+#&gt; Residual deviance: 1262.2  on 996  degrees of freedom
+#&gt; AIC: 1270.2
+#&gt; 
+#&gt; Number of Fisher Scoring iterations: 4</code></pre>
 </div>
 </div>
 
@@ -542,6 +736,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","descPosition":"bottom","loop":true,"openEffect":"zoom"});</script>
 
 
 
