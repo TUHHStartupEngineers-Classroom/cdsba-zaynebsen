@@ -3,6 +3,7 @@ title: "Difference-in-Differences"
 ---
 
 ```{r}
+library(tidyverse)
 hospdd <- readRDS("hospdd.rds")
 treated <- hospdd%>% filter(procedure==1&month>3)%>%pull(hospital)
 control <- hospdd%>% filter(procedure==0&month>3)%>%pull(hospital)
@@ -37,8 +38,12 @@ diff_before_treat <- c(satis_treated_before_treatment,replicate(620,0)) - satis_
 diff_after_treat <- c(satis_treated_after_treatment,replicate(620,0)) - satis_control_after_treatment
 
 
+after <- as.numeric(ifelse(hospdd$month > 4, 1, 0))
 
+summary(lm(satis ~ (month*after+month+hospital) , data = hospdd))
 
-summary(lm(satis ~ month+hospital , data = hospdd))
+summary(lm(satis ~ month*after+as.factor(hospdd$month) + as.factor(hospdd$hospital) , data = hospdd ))
+
+"The  difference between the two methods is that when you consider the variables month and hospital as a factor, it forms a vector of values from these variables."
 ```
 
