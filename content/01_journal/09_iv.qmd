@@ -2,6 +2,79 @@
 title: "Instrumental Variables"
 ---
 
-::: callout-note
-You can delete everything in here and start fresh.
-:::
+```{r}
+
+library(dagitty)
+library(ggdag)
+library(ggplot2)
+
+
+model<- dagify(
+  Y ~ D,
+  Y ~ U,
+  D ~ U,
+  D ~ Z,
+  exposure = "D",
+  latent = "U",
+  outcome = "Y",
+  coords = list(x = c(U = 1, D = 0, Y = 2, Z = -1),
+                y = c(U = 1, D = 0, Y = 0, Z = 0)),
+  labels = c("D" = "Usage of new feature", 
+             "Y" = "Time spent", 
+             "U" = "willingness",
+             "Z" = "EncouragementU")
+)
+ggdag(model, text = T) +
+  guides(color = "none") +
+  geom_dag_text(color = "white") +
+  geom_dag_edges(edge_color = "black") +
+  geom_dag_label_repel(aes(label = label))
+
+```
+
+```{r}
+rand_enc <- readRDS("rand_enc.rds")
+
+model_biased <- lm(time_spent ~ used_ftr, data = rand_enc)
+summary(model_biased)
+
+```
+---
+1- Stable unit treatment value assumption: Potential outcomes (time spent onf the app) for a user do not vary with treatments (usage of the new feature) assigned to other users.
+2- Independence assumption: There is no confounding between instrument(encouragement) and treatment (usage of the new feature) and also no confounding between the instrument and the outcome.it means there is no factor that both influences the encouragement and usage of the feature or the time spent. If we want to think of a potential violation, we could imagine more motivated users receiving the encouragement pop up  and thus, there would be confounding between the encouragement and both treatment assignment and outcome.
+3- Exclusion restriction:  the instrument does not directly affect outcome, but only through the treatment. There is no obvious reason why receiving the encouragement pop up would affect the time spent by a user.
+---
+```{r}
+
+cor(rand_enc) %>% round(2)
+summary( lm(used_ftr ~ rand_enc, data = rand_enc))
+
+summary(lm(time_spent~used_ftr, data= rand_enc ))
+
+```
+```{r}
+library(tibble)
+library(ggplot2)
+first_stage <- lm(used_ftr ~ rand_enc, data = rand_enc)
+summary(first_stage)
+pred_fs <- predict(first_stage)
+pred_vs_actl <- tibble(
+  pred = pred_fs,
+  actl = rand_enc$used_ftr
+)
+ggplot(pred_vs_actl, aes(x = pred, y = actl, color = as.factor(actl))) +
+  geom_jitter(alpha = .5) +
+  scale_color_discrete(labels = c("Control Group", "Treatment Group")) +
+    theme(legend.title = element_blank())
+
+second_stage <- lm(rand_enc$time_spent ~ first_stage$fitted.values)
+summary(second_stage)
+
+library(estimatr)
+model_iv <- iv_robust(time_spent ~ used_ftr | rand_enc, data = rand_enc)
+summary(model_iv)
+```
+
+
+
+
