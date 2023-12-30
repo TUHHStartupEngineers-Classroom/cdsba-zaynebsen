@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -43,6 +77,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -63,6 +100,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+
+<link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
 
 </head>
@@ -176,17 +216,219 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<div class="cell" data-hash="09_iv_cache/html/unnamed-chunk-1_a163ac5579c6ebdb7f4f9c830e579e3d">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(dagitty)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Warning: le package 'dagitty' a été compilé avec la version R 4.3.2</code></pre>
 </div>
-<div class="callout-title-container flex-fill">
-Note
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(ggdag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Warning: le package 'ggdag' a été compilé avec la version R 4.3.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; 
+#&gt; Attachement du package : 'ggdag'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; L'objet suivant est masqué depuis 'package:stats':
+#&gt; 
+#&gt;     filter</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Warning: le package 'ggplot2' a été compilé avec la version R 4.3.2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>model<span class="ot">&lt;-</span> <span class="fu">dagify</span>(</span>
+<span id="cb9-2"><a href="#cb9-2"></a>  Y <span class="sc">~</span> D,</span>
+<span id="cb9-3"><a href="#cb9-3"></a>  Y <span class="sc">~</span> U,</span>
+<span id="cb9-4"><a href="#cb9-4"></a>  D <span class="sc">~</span> U,</span>
+<span id="cb9-5"><a href="#cb9-5"></a>  D <span class="sc">~</span> Z,</span>
+<span id="cb9-6"><a href="#cb9-6"></a>  <span class="at">exposure =</span> <span class="st">"D"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7"></a>  <span class="at">latent =</span> <span class="st">"U"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8"></a>  <span class="at">outcome =</span> <span class="st">"Y"</span>,</span>
+<span id="cb9-9"><a href="#cb9-9"></a>  <span class="at">coords =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="at">U =</span> <span class="dv">1</span>, <span class="at">D =</span> <span class="dv">0</span>, <span class="at">Y =</span> <span class="dv">2</span>, <span class="at">Z =</span> <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb9-10"><a href="#cb9-10"></a>                <span class="at">y =</span> <span class="fu">c</span>(<span class="at">U =</span> <span class="dv">1</span>, <span class="at">D =</span> <span class="dv">0</span>, <span class="at">Y =</span> <span class="dv">0</span>, <span class="at">Z =</span> <span class="dv">0</span>)),</span>
+<span id="cb9-11"><a href="#cb9-11"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"D"</span> <span class="ot">=</span> <span class="st">"Usage of new feature"</span>, </span>
+<span id="cb9-12"><a href="#cb9-12"></a>             <span class="st">"Y"</span> <span class="ot">=</span> <span class="st">"Time spent"</span>, </span>
+<span id="cb9-13"><a href="#cb9-13"></a>             <span class="st">"U"</span> <span class="ot">=</span> <span class="st">"willingness"</span>,</span>
+<span id="cb9-14"><a href="#cb9-14"></a>             <span class="st">"Z"</span> <span class="ot">=</span> <span class="st">"EncouragementU"</span>)</span>
+<span id="cb9-15"><a href="#cb9-15"></a>)</span>
+<span id="cb9-16"><a href="#cb9-16"></a><span class="fu">ggdag</span>(model, <span class="at">text =</span> T) <span class="sc">+</span></span>
+<span id="cb9-17"><a href="#cb9-17"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb9-18"><a href="#cb9-18"></a>  <span class="fu">geom_dag_text</span>(<span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb9-19"><a href="#cb9-19"></a>  <span class="fu">geom_dag_edges</span>(<span class="at">edge_color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb9-20"><a href="#cb9-20"></a>  <span class="fu">geom_dag_label_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> label))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="09_iv_files/figure-html/unnamed-chunk-1-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="09_iv_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
 </div>
 </div>
-<div class="callout-body-container callout-body">
-<p>You can delete everything in here and start fresh.</p>
+</div>
+<div class="cell" data-hash="09_iv_cache/html/unnamed-chunk-2_5e6d5793ba8aaf9d1cc7de10f9aacdb0">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>rand_enc <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"rand_enc.rds"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2"></a></span>
+<span id="cb10-3"><a href="#cb10-3"></a>model_biased <span class="ot">&lt;-</span> <span class="fu">lm</span>(time_spent <span class="sc">~</span> used_ftr, <span class="at">data =</span> rand_enc)</span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="fu">summary</span>(model_biased)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; lm(formula = time_spent ~ used_ftr, data = rand_enc)
+#&gt; 
+#&gt; Residuals:
+#&gt;      Min       1Q   Median       3Q      Max 
+#&gt; -20.4950  -3.5393   0.0158   3.5961  20.5051 
+#&gt; 
+#&gt; Coefficients:
+#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    
+#&gt; (Intercept) 18.86993    0.06955   271.3   &lt;2e-16 ***
+#&gt; used_ftr    10.82269    0.10888    99.4   &lt;2e-16 ***
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#&gt; 
+#&gt; Residual standard error: 5.351 on 9998 degrees of freedom
+#&gt; Multiple R-squared:  0.497,  Adjusted R-squared:  0.497 
+#&gt; F-statistic:  9881 on 1 and 9998 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="cell" data-hash="09_iv_cache/html/unnamed-chunk-3_72048d51752397fab438d7582e7708ea">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">cor</span>(rand_enc) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;            rand_enc used_ftr time_spent
+#&gt; rand_enc       1.00     0.20       0.13
+#&gt; used_ftr       0.20     1.00       0.71
+#&gt; time_spent     0.13     0.71       1.00</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">summary</span>( <span class="fu">lm</span>(used_ftr <span class="sc">~</span> rand_enc, <span class="at">data =</span> rand_enc))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; lm(formula = used_ftr ~ rand_enc, data = rand_enc)
+#&gt; 
+#&gt; Residuals:
+#&gt;     Min      1Q  Median      3Q     Max 
+#&gt; -0.5071 -0.3062 -0.3062  0.4929  0.6938 
+#&gt; 
+#&gt; Coefficients:
+#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    
+#&gt; (Intercept) 0.306164   0.006851   44.69   &lt;2e-16 ***
+#&gt; rand_enc    0.200940   0.009624   20.88   &lt;2e-16 ***
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#&gt; 
+#&gt; Residual standard error: 0.4811 on 9998 degrees of freedom
+#&gt; Multiple R-squared:  0.04178,    Adjusted R-squared:  0.04169 
+#&gt; F-statistic:   436 on 1 and 9998 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(time_spent<span class="sc">~</span>used_ftr, <span class="at">data=</span> rand_enc ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; lm(formula = time_spent ~ used_ftr, data = rand_enc)
+#&gt; 
+#&gt; Residuals:
+#&gt;      Min       1Q   Median       3Q      Max 
+#&gt; -20.4950  -3.5393   0.0158   3.5961  20.5051 
+#&gt; 
+#&gt; Coefficients:
+#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    
+#&gt; (Intercept) 18.86993    0.06955   271.3   &lt;2e-16 ***
+#&gt; used_ftr    10.82269    0.10888    99.4   &lt;2e-16 ***
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#&gt; 
+#&gt; Residual standard error: 5.351 on 9998 degrees of freedom
+#&gt; Multiple R-squared:  0.497,  Adjusted R-squared:  0.497 
+#&gt; F-statistic:  9881 on 1 and 9998 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="cell" data-hash="09_iv_cache/html/unnamed-chunk-4_594fd9ee23cd6e303bac2f9364f7acf2">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">library</span>(tibble)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Warning: le package 'tibble' a été compilé avec la version R 4.3.2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb20-2"><a href="#cb20-2"></a>first_stage <span class="ot">&lt;-</span> <span class="fu">lm</span>(used_ftr <span class="sc">~</span> rand_enc, <span class="at">data =</span> rand_enc)</span>
+<span id="cb20-3"><a href="#cb20-3"></a><span class="fu">summary</span>(first_stage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; lm(formula = used_ftr ~ rand_enc, data = rand_enc)
+#&gt; 
+#&gt; Residuals:
+#&gt;     Min      1Q  Median      3Q     Max 
+#&gt; -0.5071 -0.3062 -0.3062  0.4929  0.6938 
+#&gt; 
+#&gt; Coefficients:
+#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    
+#&gt; (Intercept) 0.306164   0.006851   44.69   &lt;2e-16 ***
+#&gt; rand_enc    0.200940   0.009624   20.88   &lt;2e-16 ***
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#&gt; 
+#&gt; Residual standard error: 0.4811 on 9998 degrees of freedom
+#&gt; Multiple R-squared:  0.04178,    Adjusted R-squared:  0.04169 
+#&gt; F-statistic:   436 on 1 and 9998 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>pred_fs <span class="ot">&lt;-</span> <span class="fu">predict</span>(first_stage)</span>
+<span id="cb22-2"><a href="#cb22-2"></a>pred_vs_actl <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb22-3"><a href="#cb22-3"></a>  <span class="at">pred =</span> pred_fs,</span>
+<span id="cb22-4"><a href="#cb22-4"></a>  <span class="at">actl =</span> rand_enc<span class="sc">$</span>used_ftr</span>
+<span id="cb22-5"><a href="#cb22-5"></a>)</span>
+<span id="cb22-6"><a href="#cb22-6"></a><span class="fu">ggplot</span>(pred_vs_actl, <span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> actl, <span class="at">color =</span> <span class="fu">as.factor</span>(actl))) <span class="sc">+</span></span>
+<span id="cb22-7"><a href="#cb22-7"></a>  <span class="fu">geom_jitter</span>(<span class="at">alpha =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb22-8"><a href="#cb22-8"></a>  <span class="fu">scale_color_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Control Group"</span>, <span class="st">"Treatment Group"</span>)) <span class="sc">+</span></span>
+<span id="cb22-9"><a href="#cb22-9"></a>    <span class="fu">theme</span>(<span class="at">legend.title =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="09_iv_files/figure-html/unnamed-chunk-4-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="09_iv_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>second_stage <span class="ot">&lt;-</span> <span class="fu">lm</span>(rand_enc<span class="sc">$</span>time_spent <span class="sc">~</span> first_stage<span class="sc">$</span>fitted.values)</span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="fu">summary</span>(second_stage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; lm(formula = rand_enc$time_spent ~ first_stage$fitted.values)
+#&gt; 
+#&gt; Residuals:
+#&gt;      Min       1Q   Median       3Q      Max 
+#&gt; -25.8757  -5.4714  -0.3263   5.3807  25.6541 
+#&gt; 
+#&gt; Coefficients:
+#&gt;                           Estimate Std. Error t value Pr(&gt;|t|)    
+#&gt; (Intercept)                19.3124     0.3129   61.72   &lt;2e-16 ***
+#&gt; first_stage$fitted.values   9.7382     0.7447   13.08   &lt;2e-16 ***
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#&gt; 
+#&gt; Residual standard error: 7.482 on 9998 degrees of freedom
+#&gt; Multiple R-squared:  0.01681,    Adjusted R-squared:  0.01672 
+#&gt; F-statistic:   171 on 1 and 9998 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">library</span>(estimatr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Warning: le package 'estimatr' a été compilé avec la version R 4.3.2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>model_iv <span class="ot">&lt;-</span> <span class="fu">iv_robust</span>(time_spent <span class="sc">~</span> used_ftr <span class="sc">|</span> rand_enc, <span class="at">data =</span> rand_enc)</span>
+<span id="cb27-2"><a href="#cb27-2"></a><span class="fu">summary</span>(model_iv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; iv_robust(formula = time_spent ~ used_ftr | rand_enc, data = rand_enc)
+#&gt; 
+#&gt; Standard error type:  HC2 
+#&gt; 
+#&gt; Coefficients:
+#&gt;             Estimate Std. Error t value  Pr(&gt;|t|) CI Lower CI Upper   DF
+#&gt; (Intercept)   19.312     0.2248   85.89 0.000e+00   18.872    19.75 9998
+#&gt; used_ftr       9.738     0.5353   18.19 8.716e-73    8.689    10.79 9998
+#&gt; 
+#&gt; Multiple R-squared:  0.4921 ,    Adjusted R-squared:  0.492 
+#&gt; F-statistic:   331 on 1 and 9998 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 
@@ -542,6 +784,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","selector":".lightbox","closeEffect":"zoom","loop":true,"openEffect":"zoom"});</script>
 
 
 
