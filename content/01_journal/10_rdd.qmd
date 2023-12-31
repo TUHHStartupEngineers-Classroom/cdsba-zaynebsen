@@ -2,6 +2,97 @@
 title: "Regression Discontinuity"
 ---
 
-::: callout-note
-You can delete everything in here and start fresh.
-:::
+```{r}
+library(tidyverse)
+library(ggthemr)
+library(ggplot2)
+coupon <- readRDS("coupon.rds")
+c0 <- 60
+bw <- (c0 + c(-5, 5))/2
+
+df_bw_below <- coupon %>% filter(days_since_last >= bw[1] & days_since_last < c0)
+df_bw_above <- coupon %>% filter(days_since_last >= c0 & days_since_last <= bw[2])
+
+df_bw <- bind_rows(df_bw_above, df_bw_below)
+dim(df_bw)
+ggthemr()
+dep_var <-
+  ggplot(coupon, aes(x = days_since_last, y = purchase_after, color = coupon)) +
+  geom_vline(xintercept = c0, color = ggthemr::swatch()[5]) +
+  geom_point(alpha = 0.1, size = 0.2) +
+  
+  geom_smooth(data = filter(coupon, days_since_last <= c0), 
+              method = "lm", se = F, linewidth = 1, linetype = "dashed") +
+  geom_smooth(data = filter(coupon, days_since_last > c0), 
+              method = "lm", se = F, linewidth = 1, linetype = "dashed") +
+ 
+  geom_smooth(data = df_bw_below, method = "lm", se = F, 
+              color = ggthemr::swatch()[7], linewidth = 2) +
+  geom_smooth(data = df_bw_above, method = "lm", se = F, 
+              color = ggthemr::swatch()[7], linewidth = 2) +
+  scale_color_discrete(labels = c("No coupon", "Coupon")) +
+  xlab("Days since last purchase") +
+  ylab("Purchase after coupon assignment") +
+  theme(legend.title = element_blank())
+dep_var
+```
+
+
+```{r}
+"when we take the half of the bandwidth, we lose the precision. Then, the uncertainty of our estimates may increase."
+```
+
+
+
+```{r}
+coupon <- readRDS("coupon.rds")
+library(ggplot2)
+
+c0 <- 60
+bw <- (c0 + c(-5, 5))*2
+# Subsets below and above threshold in specified bandwidth
+df_bw_below <- coupon %>% filter(days_since_last >= bw[1] & days_since_last < c0)
+df_bw_above <- coupon %>% filter(days_since_last >= c0 & days_since_last <= bw[2])
+
+df_bw <- bind_rows(df_bw_above, df_bw_below)
+dim(df_bw)
+ggthemr()
+dep_var <-
+  ggplot(coupon, aes(x = days_since_last, y = purchase_after, color = coupon)) +
+  geom_vline(xintercept = c0, color = ggthemr::swatch()[5]) +
+  geom_point(alpha = 0.1, size = 0.2) +
+  # add lines for the full range
+  geom_smooth(data = filter(coupon, days_since_last <= c0), 
+              method = "lm", se = F, linewidth = 1, linetype = "dashed") +
+  geom_smooth(data = filter(coupon, days_since_last > c0), 
+              method = "lm", se = F, linewidth = 1, linetype = "dashed") +
+  # add lines for specified bandwidth
+  geom_smooth(data = df_bw_below, method = "lm", se = F, 
+              color = ggthemr::swatch()[7], linewidth = 2) +
+  geom_smooth(data = df_bw_above, method = "lm", se = F, 
+              color = ggthemr::swatch()[7], linewidth = 2) +
+  scale_color_discrete(labels = c("No coupon", "Coupon")) +
+  xlab("Days since last purchase") +
+  ylab("Purchase after coupon assignment") +
+  theme(legend.title = element_blank())
+dep_var
+```
+
+```{r}
+"when we double the bandwidth we take into account observations that are very different from our cutoff point. Then, it seems like we are introducing confounding factors."
+```
+
+
+```{r}
+library(rddensity)
+shipping <- readRDS("shipping.rds")
+c0 <- 30
+rddd <- rddensity(shipping$purchase_amount, c = c0)
+summary(rddd)
+rdd_plot <- rdplotdensity(rddd, shipping$purchase_amount, plotN = 100)
+```
+
+```{r}
+"The cutoff 30 cant be chosen because as it can be seen in the plot, the confidence intervals dont overlap. Then, we cant use RDD to obtain valid results."
+```
+
